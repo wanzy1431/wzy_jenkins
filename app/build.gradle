@@ -14,8 +14,28 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file('wzy_jenkins.jks')
+            storePassword 'wzy123456'
+            keyAlias = 'wzy_jenkins'
+            keyPassword 'wzy123456'
+        }
+        debug {
+            storeFile file('wzy_jenkins.jks')
+            storePassword 'wzy123456'
+            keyAlias = 'wzy_jenkins'
+            keyPassword 'wzy123456'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
