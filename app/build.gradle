@@ -13,7 +13,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.wzy_jenkins"
+        applicationId project.APPLICATION_ID
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -48,10 +48,45 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "mark" //相当于一个标记
+    productFlavors {
+        brain {
+            applicationId="com.aimerd.channel"
+            dimension "mark" }
+        uc { dimension "mark" }
+//        yingyongbao { dimension "mark" }
+//        xiaomi { dimension "mark" }
+//        "360m" { dimension "mark" }
+//        oppo { dimension "mark" }
+//
+//        huawei { dimension "mark" }
+//        meizu { dimension "mark" }
+//        vivo { dimension "mark" }
+//        sougou { dimension "mark" }
+//        lianxiang { dimension "mark" }
+//        zongbao { dimension "mark" }
 
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [ATMAN_CHANNEL_VALUE: name]
+    }
+
+    //自定义打包时apk名字
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+//            if (variant.buildType.name.equals('release')) {
+//                // abc_渠道名_版本名.apk  还可以拼接其他app内容：variant.versionCode  variant.buildType.name
+//
+//            }
+            outputFileName = "GreenVolley_${variant.name}_${variant.versionName}_${releaseTime()}.apk"
+        }
+    }
 
 }
-
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
